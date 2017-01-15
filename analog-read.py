@@ -11,12 +11,12 @@ def analog_read(channel):
 
     return adc_out
 
-
+        
 while True:
 
     reading = analog_read(0)
 
-    voltage = reading * 3.3 / 4096
+    voltage = reading * 4.3 / 4096
 
     Temp = voltage * 99.5
 
