@@ -30,17 +30,20 @@ def read_data():
 	serialport.write("status\r\n")
 	serialport.write("gpio1 0")
 	response = serialport.readlines()
+
 	names = ['ec','temp','ph','water_level','gpio1','gpio2','gpio3','gpio4']
 	# response = ['\r\n', '3.98,23.56,5.50,0,0,0,1,1\r\n'];
 	if len(response) > 1:
 		s = response[1]
 		s = s.replace('\r\n','')
-		values = s.split(',')		
-		print names
-		print s
-		for i, name in enumerate(names):
-			log_data(name, values[i])
-			print name,'=',values[i],
+		values = s.split(',')	
+
+		if len(values) > 1 :	
+			for i, name in enumerate(names):
+				log_data(name, values[i])
+				print name,'=',values[i],
+		else:
+			print s
 	else:
 		print "no response"
 
