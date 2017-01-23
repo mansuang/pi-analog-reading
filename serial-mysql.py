@@ -42,8 +42,10 @@ def read_data():
 			for i, name in enumerate(names):
 				log_data(name, values[i])
 				print name,'=',values[i],
+			print " "
 		else:
 			print s
+		
 	else:
 		print "no response"
 
