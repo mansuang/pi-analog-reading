@@ -28,7 +28,7 @@ def log_data(name, val):
 def read_data():
 	serialport = serial.Serial("/dev/ttyAMA0", 9600, timeout=0.5)
 	serialport.write("status\r\n")
-	serialport.write("gpio1 0")
+	# serialport.write("gpio1 0")
 	response = serialport.readlines()
 
 	names = ['ec','temp','ph','water_level','gpio1','gpio2','gpio3','gpio4']
