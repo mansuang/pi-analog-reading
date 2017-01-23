@@ -37,3 +37,25 @@ CREATE TABLE `temp` (
 --
 ALTER TABLE `temp`
   ADD PRIMARY KEY (`id`);
+
+CREATE TABLE `data` (
+  `name` varchar(16) NOT NULL,
+  `current_value` varchar(32) NOT NULL,
+  `is_control` enum('0','1') NOT NULL DEFAULT '0',
+  `set_hi` varchar(32) DEFAULT NULL,
+  `set_low` varchar(32) DEFAULT NULL,
+  `trig_on_state` enum('hi','low') NOT NULL DEFAULT 'hi',
+  `delay_sec` int(10) NOT NULL DEFAULT '5',
+  `output` enum('0','1') NOT NULL DEFAULT '0',
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `data`
+--
+ALTER TABLE `data`
+  ADD PRIMARY KEY (`name`);
