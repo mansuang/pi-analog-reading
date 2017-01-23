@@ -47,5 +47,6 @@ def read_data():
 	else:
 		print "no response"
 
-
-read_data()
+while True:
+	read_data()
+	time.sleep(1)
