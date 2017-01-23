@@ -36,7 +36,7 @@ def read_data():
 		s = response[1]
 		s = s.replace('\r\n','')
 		values = s.split(',')		
-		print name
+		print names
 		print s
 		for i, name in enumerate(names):
 			log_data(name, values[i])
