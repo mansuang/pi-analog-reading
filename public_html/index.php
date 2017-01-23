@@ -9,8 +9,8 @@ if( isset($_GET['d']) && $_GET['d']='1')
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $stmt = $dbh->query('SELECT * from temp WHERE id=1');
-        $data = $stmt->fetchObject();
+        $stmt = $dbh->query('SELECT * from data ');
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
@@ -23,45 +23,51 @@ if( isset($_GET['d']) && $_GET['d']='1')
 <html>
 
 <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<style>
+.container {
+  margin: 10px 20px;
+}
+</style>
+
+
 </head>
 
 <body>
 
 <div id="app" >
-
-  <div class="notification">
-    Data Time: <strong>{{ data.created_at }}</strong>
-  </div>
-
-
-  <div class="tile is-vertical is-8">
-    <div class="tile">
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-primary">
-          <p class="title">Reading</p>
-          <p class="subtitle" id="reading">{{ data.reading }}</p>
-        </article>
-        <article class="tile is-child notification is-warning">
-          <p class="title">Voltage</p>
-          <p class="subtitle" id="voltage">{{ data.voltage }}</p>
-        </article>
-        <article class="tile is-child notification is-info">
-          <p class="title">Temp</p>
-          <p class="subtitle" id="temp">{{ data.temp }}</p>
-
-        </article>
-      </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-danger" v-show="relayOn">
-          <p class="title">Relay</p>
-          <p class="subtitle" id="temp">ON</p>
-
-        </article>
-      </div>
+  <div class="container">
+    <h1 class="title is-1">Melon Team I/O Status on {{ now }}</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Current Value</th>
+            <th>Control ?</th>
+            <th>SET HI</th>
+            <th>SET LOW</th>
+            <th>TRIG ON</th>
+            <th>DELAY (Sec)</th>
+            <th>Output</th>
+            <th>Updated at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="d ,idx in data">
+            <td>{{ d.name }}</td>
+            <td>{{ d.current_value }}</td>
+            <td>{{ d.is_control }}</td>
+            <td>{{ d.set_hi }}</td>
+            <td>{{ d.set_low }}</td>
+            <td>{{ d.trig_on_state }}</td>
+            <td>{{ d.delay_sec }}</td>
+            <td>{{ d.output }}</td>
+            <td>{{ d.updated_at }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
@@ -76,11 +82,8 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        data:{
-            reading: -1,
-            voltage: -1,
-            temp: -1
-        }
+        data:{},
+        now: new Date()
     },
 
     methods: {
@@ -93,8 +96,10 @@ var app = new Vue({
             })
               .done(function( msg ) {
                 self.data = msg;
+                self.now = new Date();
               });
         }
+
     },
 
     computed: {
